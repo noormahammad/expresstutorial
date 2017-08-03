@@ -64,7 +64,7 @@ app.get('/chervu',function(req,res){
     res.end();
 });
 
-
+//submit form
 app.post('/process',function(req,res){
     console.log('Form: '+ req.query.form);
     console.log('CSRF toekn: ' + req.body._csrf);
@@ -72,6 +72,47 @@ app.post('/process',function(req,res){
     console.log('Question: '+ req.body.question);
     res.redirect(303, '/thankyou');
 });
+
+//file upload
+app.get('/file-upload', function(req,res){
+    var now = new Date();
+    res.render('file-upload',{
+        year: now.getFullYear(), 
+        month: now.getMonth()        
+    })
+});
+
+app.post('/file-upload/:year/:month',function(req,res){
+    var form = new formidable.IncomingForm();
+    form.parse(req,function(err, fields, file){
+        if(err)
+            return res.redirect(303,'Error');        
+        console.log('Received File');
+        console.log(file);
+        res.redirect(303,'/thankyou');
+    });
+});
+
+//Cookies
+//set  a cookie
+app.get('/cookie',function(req,res){
+res.cookie('username','tmpnc4',{expire:new Date() + 9999})
+          .send('username has the value of tmpnc4');
+});
+
+//read all cookie
+app.get('/listcookies',function(req,res){
+console.log("Cookies: ", req.cookies);
+res.send('Look in the console for all cookies');
+});
+
+//clear/delete cookie
+app.get('/deletecookies', function(req, res){
+ res.clearCookie('username');
+ res.send("username cookie deleted");
+});
+
+
 
 
 //another middleware
