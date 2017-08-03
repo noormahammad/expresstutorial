@@ -24,6 +24,7 @@ app.set('port',process.env.PORT ||  3000);
 
 app.use(express.static(__dirname + "/public"));
 
+//routes
 app.get("/",function(req,res){
     res.render('home');
 });
@@ -62,6 +63,7 @@ app.get('/chervu',function(req,res){
     res.write("Welcome Chervu");
     res.end();
 });
+
 
 app.post('/process',function(req,res){
     console.log('Form: '+ req.query.form);
