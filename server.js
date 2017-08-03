@@ -93,7 +93,7 @@ app.post('/file-upload/:year/:month',function(req,res){
     });
 });
 
-//Cookies
+////----------------------Cookies---------------------------///
 //set  a cookie
 app.get('/cookie',function(req,res){
 res.cookie('username','tmpnc4',{expire:new Date() + 9999})
@@ -112,8 +112,35 @@ app.get('/deletecookies', function(req, res){
  res.send("username cookie deleted");
 });
 
+////------------------Session------------------------------///
+var session = require('express-session');
+var parseurl = require('parseurl');
 
+app.use(session({
+    resave:false,
+    saveUninitialized: true,
+    secret:credentails.cookieSecret,
+}));
 
+//track the number of times a user has gone to specific page
+//another middleware
+app.use(function(req, res, next){
+    var views = req.session.views;
+
+    if(!views) {
+        views = req.session.views = {};
+    }
+
+    var pathname = parseurl(req).pathname;
+    views[pathname] = (views[pathname] || 0) + 1;
+    
+    //since this is the middleware, next() is needed because it will continue down the pipeline
+    next();    
+});
+
+app.get('/viewcount',function(req,res,next){
+    res.send('You viewed this page ' + req.session.views['/viewcount'] + " times");
+});
 
 //another middleware
 app.use(function(req,res){
