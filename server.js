@@ -58,6 +58,10 @@ app.get('/thankyou',function(req,res){
     res.render('thankyou');
 });
 
+app.get('/chervu',function(req,res){
+    res.write("Welcome Chervu");
+});
+
 app.post('/process',function(req,res){
     console.log('Form: '+ req.query.form);
     console.log('CSRF toekn: ' + req.body._csrf);
