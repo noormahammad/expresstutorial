@@ -60,6 +60,7 @@ app.get('/thankyou',function(req,res){
 
 app.get('/chervu',function(req,res){
     res.write("Welcome Chervu");
+    res.end();
 });
 
 app.post('/process',function(req,res){
